@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Launch Pad</title>
+        <link rel="stylesheet" href="styles/styles.css">
+        <link rel="icon" type="image/png" href="images/site/favicon.png">
+
+        <script src="scripts/pageBuilder.js"></script>
+        <script src="scripts/pageInit.js"></script>
+    </head>
+    <body>
+        <header>
+            <div class="search-spacer">&nbsp</div>
+            <div class="search-box">
+                <img id="search-icon" src="images/site/search-solid.svg" class="search-icon" />
+                <input type="text" id="search-edit" class="search-edit" placeholder="(Google search)">
+            </div>
+            <div class="search-options">
+                <img id="map-icon" src="images/site/map-regular.svg" id="searchMapIcon" class="search-icon-alternate">
+                <img id="image-icon" src="images/site/images-regular.svg" id="searchImagesIcon" class="search-icon-alternate">
+                <img id="translate-icon" src="images/site/language-solid.svg" id="searchTranslateIcon" class="search-icon-alternate">
+            </div>
+        </header>
+        <div class="logo-wrapper">
+            <div class="logo-logo-spacer">
+                <img src="images/site/rocket-solid.svg" class="logo-rocket" />
+            </div>
+            <div class="logo-text-spacer">
+                <span class="logo-launch"></span>Launch</span><span class="logo-pad">Pad</span>
+            </div>
+        </div>
+
+        <div class="page-container">
+            <section id="side-menu" class="side-menu">
+            </section>
+            <section id="content-area">
+            </section>
+        </div>
+        <footer>
+            <div class="date-time">
+                <div id="footer-date"></div>
+                <div id="footer-time"></div>
+            </div>
+        </footer>
+        <script>
+            pageInit(siteMap);
+        </script>
+    </body>
+</html>

@@ -8,7 +8,7 @@ namespace TodoApi.Shared
     public enum TaskStatus
     {
         BackBurner,
-        Ready,
+        ReadyToBegin,
         InProgress,
         Finished
     }

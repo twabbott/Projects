@@ -23,7 +23,7 @@ namespace TodoApi.Store.Entities
 
         public DateTime LastChangedDate { get; set; }
 
-        public TaskStatus Status { get; set; }
+        public TodoApi.Shared.TaskStatus Status { get; set; }
 
         public bool IsActive { get; set; }
     }

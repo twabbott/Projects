@@ -73,6 +73,11 @@ namespace TodoApi.Controllers
         [HttpPost]
         public IActionResult Create(TodoModel item)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
                 _todoService.Create(item);

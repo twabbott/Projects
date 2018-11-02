@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using TodoApi.Models;
+using TodoApi.Models.Validators;
 using TodoApi.Services.Impl;
 using TodoApi.Services.Interfaces;
 using TodoApi.Store.Contexts;
@@ -33,13 +36,18 @@ namespace TodoApi
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddXmlSerializerFormatters();
+                .AddXmlSerializerFormatters()
+                .AddFluentValidation();
 
             // Add all custom DI mappings for your services/etc. here
             services
                 .AddTransient<IAppDbContext, AppDbContext>()
                 .AddTransient<ITodoService, TodoService>()
                 .AddTransient<IFilterService, FilterService>();
+
+            // Add all validators here
+            services
+                .AddTransient<IValidator<TodoModel>, TodoValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

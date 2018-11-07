@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TodoApi.Models;
 using TodoApi.Services.Interfaces;
-using TodoApi.Store.Contexts;
-using TodoApi.Store.Entities;
+using TodoApi.Store.AppDbContext;
+using TodoApi.Store.AppDbContext.Entities;
 
 namespace TodoApi.Services.Impl
 {

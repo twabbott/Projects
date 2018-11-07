@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TodoApi.Store.Entities;
+using TodoApi.Store.AppDbContext.Entities;
 
-namespace TodoApi.Store.Contexts
+namespace TodoApi.Store.AppDbContext
 {
     public interface IAppDbContext
     {

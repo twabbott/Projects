@@ -21,7 +21,8 @@ namespace TodoApi
 
 
         /// <summary>
-        ///     This lambda is used by the tooling
+        ///     This lambda is used by the tooling.  YOU NEED TO DO IT LIKE THIS, because
+        ///     otherwise the tooling won't work right (whatever that means).
         /// </summary>
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)  // Creates a new IWebHostBuilder instance with some pre-configured defaults.

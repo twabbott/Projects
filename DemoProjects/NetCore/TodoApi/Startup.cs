@@ -11,7 +11,9 @@ using TodoApi.Models;
 using TodoApi.Models.Validators;
 using TodoApi.Services.Impl;
 using TodoApi.Services.Interfaces;
-using TodoApi.Store.Contexts;
+using TodoApi.Store.AppDbContext;
+using System.Threading.Tasks;
+using System;
 
 namespace TodoApi
 {
@@ -19,6 +21,17 @@ namespace TodoApi
     {
         public static IHostingEnvironment HostEnvironment { get; private set; }
 
+        /// <summary>
+        ///     Startup function
+        /// </summary>
+        /// 
+        /// <param name="configuration"></param>
+        /// 
+        /// <remarks>
+        ///     This function gets called very first.  Nothing has been 
+        ///     initialized yet, so you can't depend on anything being 
+        ///     configured yet.
+        /// </remarks>
         public Startup(IConfiguration configuration)
         {
             // This is an object that represents the contents of appsettings.json
@@ -27,31 +40,52 @@ namespace TodoApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        ///     ConfigureServices method
+        /// </summary>
+        /// 
+        /// <param name="services"></param>
+        /// 
+        /// <remarks>
+        ///     Use this method to init all the DI for your app.
+        /// </remarks>
         public void ConfigureServices(IServiceCollection services)
         {
+            // Set up all your DB contexts here.
             services
-                .AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+                .AddDbContext<IAppDbContext, AppDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
 
+            // Call AddMvc() and add all the middleware / plugins here.
             services
                 .AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddXmlSerializerFormatters()
                 .AddFluentValidation();
 
-            // Add all custom DI mappings for your services/etc. here
+            // Add all custom DI mappings for your services/etc. here.  For more info
+            // on lifetime, see this article: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.1#service-lifetimes
             services
-                .AddTransient<IAppDbContext, AppDbContext>()
                 .AddTransient<ITodoService, TodoService>()
                 .AddTransient<IFilterService, FilterService>();
 
-            // Add all validators here
+            // FluentValidation config.  Add all validators here
             services
                 .AddTransient<IValidator<TodoModel>, TodoValidator>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        /// <summary>
+        ///     Configure method
+        /// </summary>
+        /// 
+        /// <param name="app"></param>
+        /// <param name="env"></param>
+        /// <param name="loggerFactory"></param>
+        /// <param name="host"></param>
+        /// 
+        /// <remarks>
+        ///     This method gets called last.  This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </remarks>
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider host)
         {
             HostEnvironment = env; // cache this for later use (a bit of Tom code)
 
@@ -75,6 +109,12 @@ namespace TodoApi
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            if (HostEnvironment.IsDevelopment())
+            {
+                IAppDbContext appDbContext = host.GetRequiredService<IAppDbContext>();
+                appDbContext.AddMockData();
+            }
         }
     }
 }

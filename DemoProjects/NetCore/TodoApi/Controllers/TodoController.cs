@@ -29,7 +29,7 @@ namespace TodoApi.Controllers
         [HttpGet]
         public ActionResult<List<TodoModel>> GetAll()
         {
-            List<TodoModel> list;
+            IEnumerable<TodoModel> list;
             try
             {
                 list = _todoService.Read();

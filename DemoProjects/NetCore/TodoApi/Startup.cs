@@ -65,7 +65,7 @@ namespace TodoApi
             // Add all custom DI mappings for your services/etc. here.  For more info
             // on lifetime, see this article: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.1#service-lifetimes
             services
-                .AddTransient<ITodoService, TodoService>()
+                .AddScoped<ITodoService, TodoService>() // Data services should have a "Scoped" lifetime, not transient.
                 .AddTransient<IFilterService, FilterService>();
 
             // FluentValidation config.  Add all validators here
@@ -108,6 +108,12 @@ namespace TodoApi
             }
 
             app.UseHttpsRedirection();
+
+            AutoMapper.Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<Store.AppDbContext.Entities.Todo, Models.TodoModel>();
+            });
+
             app.UseMvc();
 
             if (HostEnvironment.IsDevelopment())

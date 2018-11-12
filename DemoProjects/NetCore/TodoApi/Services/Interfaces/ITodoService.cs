@@ -9,7 +9,7 @@ namespace TodoApi.Services.Interfaces
 {
     public interface ITodoService
     {
-        List<TodoModel> Read();
+        IEnumerable<TodoModel> Read();
 
         TodoModel Read(long id);
 

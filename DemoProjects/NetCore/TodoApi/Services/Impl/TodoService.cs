@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,25 +33,11 @@ namespace TodoApi.Services.Impl
             };
         }
 
-        public static TodoModel EntityToModel(Todo todo)
+        public IEnumerable<TodoModel> Read()
         {
-            return new TodoModel()
-            {
-                Id = todo.Id,
-                Name = todo.Name,
-                IsComplete = todo.IsComplete,
-                IsBlocked = todo.IsBlocked,
-                LastChangedDate = todo.LastChangedDate,
-                Status = todo.Status,
-                IsActive = todo.IsActive
-            };
-        }
+            List<Todo> results = _context.Todo.ToList();
 
-        public List<TodoModel> Read()
-        {
-            return _context.Todo
-                .Select(item => EntityToModel(item))
-                .ToList();
+            return Mapper.Map<IEnumerable<TodoModel>>(results);
         }
 
         public TodoModel Read(long id)
@@ -61,7 +48,7 @@ namespace TodoApi.Services.Impl
                 return null;
             }
 
-            return EntityToModel(todo);
+            return Mapper.Map<TodoModel>(todo);
         }
 
         public TodoModel Create(TodoModel newItem)

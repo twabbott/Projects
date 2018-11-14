@@ -21,10 +21,14 @@ namespace TodoApi.Store.AppDbContext.Entities
 
         public bool IsBlocked { get; set; }
 
-        public DateTime LastChangedDate { get; set; }
-
-        public TodoApi.Shared.TaskStatus Status { get; set; }
+        public TodoApi.Shared.TodoStatus Status { get; set; }
 
         public bool IsActive { get; set; }
+
+        public DateTime DateCreated { get; set; }
+
+        public DateTime DateLastChanged { get; set; }
+
+        public DateTime? DateCompleted { get; set; }
     }
 }

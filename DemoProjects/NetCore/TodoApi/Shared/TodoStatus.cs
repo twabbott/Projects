@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace TodoApi.Shared
 {
-    public enum TaskStatus
+    public enum TodoStatus
     {
         BackBurner,
         ReadyToBegin,

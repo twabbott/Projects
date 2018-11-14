@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Hosting;
 using TodoApi.Store.AppDbContext.Entities;
 using Microsoft.Extensions.Logging;
+using TodoApi.Shared;
+using System;
 
 namespace TodoApi.Store.AppDbContext
 {
@@ -13,6 +15,9 @@ namespace TodoApi.Store.AppDbContext
         public AppDbContext(DbContextOptions<AppDbContext> options, ILogger<AppDbContext> logger)
             : base(options)
         {
+            // This actually creates and initializes the database.
+            Database.EnsureCreated();
+
             _logger = logger;
 
             _logger.LogInformation($"############ Made an instance of AppDbContext (instance #{++_instanceCount})");
@@ -26,6 +31,25 @@ namespace TodoApi.Store.AppDbContext
         public void CommitChanges()
         {
             SaveChanges();
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Todo>().Property(obj => obj.Name)
+                .IsRequired()
+                .HasMaxLength(200);
+            modelBuilder.Entity<Todo>().Property(obj => obj.IsComplete)
+                .HasDefaultValue(false);
+            modelBuilder.Entity<Todo>().Property(obj => obj.IsBlocked)
+                .HasDefaultValue(false);
+            modelBuilder.Entity<Todo>().Property(obj => obj.Status)
+                .HasDefaultValue(TodoStatus.ReadyToBegin);
+            modelBuilder.Entity<Todo>().Property(obj => obj.IsActive)
+                .HasDefaultValue(true);
+            modelBuilder.Entity<Todo>().Property(obj => obj.DateCreated)
+                .IsRequired();
+            modelBuilder.Entity<Todo>().Property(obj => obj.DateLastChanged)
+                .IsRequired();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace TodoApi.Services.Impl
                 Name = model.Name,
                 IsComplete = model.IsComplete,
                 IsBlocked = model.IsBlocked,
-                LastChangedDate = model.LastChangedDate,
+                DateLastChanged = model.DateLastChanged,
                 Status = model.Status,
                 IsActive = model.IsActive
             };

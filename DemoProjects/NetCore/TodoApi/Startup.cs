@@ -52,8 +52,13 @@ namespace TodoApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Set up all your DB contexts here.
+            string connectionString = Configuration["connection-string"];
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new Exception("Connection string not found!");
+            }
             services
-                .AddDbContext<IAppDbContext, AppDbContext>(opt => opt.UseInMemoryDatabase("TodoList"));
+                .AddDbContext<IAppDbContext, AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
             // Call AddMvc() and add all the middleware / plugins here.
             services

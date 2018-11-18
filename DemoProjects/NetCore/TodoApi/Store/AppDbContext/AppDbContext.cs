@@ -28,9 +28,9 @@ namespace TodoApi.Store.AppDbContext
 
         public DbSet<Step> Steps { get; set; }
 
-        public void CommitChanges()
+        public bool CommitChanges()
         {
-            SaveChanges();
+            return (SaveChanges() >= 0);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

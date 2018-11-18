@@ -114,9 +114,13 @@ namespace TodoApi
 
             app.UseHttpsRedirection();
 
+            // Do all your auto-mapper setup here.
             AutoMapper.Mapper.Initialize(cfg =>
             {
+                // NOTE: mappings are unidirectional, so if you want it to go 
+                // both ways, you need to specify both.
                 cfg.CreateMap<Store.AppDbContext.Entities.Todo, Models.TodoModel>();
+                cfg.CreateMap<Models.TodoModel, Store.AppDbContext.Entities.Todo>();
             });
 
             app.UseMvc();

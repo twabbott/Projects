@@ -13,6 +13,6 @@ namespace TodoApi.Store.AppDbContext
 
         DbSet<Step> Steps { get; set; }
 
-        void CommitChanges();
+        bool CommitChanges();
     }
 }

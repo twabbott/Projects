@@ -19,20 +19,6 @@ namespace TodoApi.Services.Impl
             _context = context;
         }
 
-        public static Todo ModelToEntity(TodoModel model)
-        {
-            return new Todo()
-            {
-                Id = model.Id,
-                Name = model.Name,
-                IsComplete = model.IsComplete,
-                IsBlocked = model.IsBlocked,
-                DateLastChanged = model.DateLastChanged,
-                Status = model.Status,
-                IsActive = model.IsActive
-            };
-        }
-
         public IEnumerable<TodoModel> Read()
         {
             List<Todo> results = _context.Todo.ToList();
@@ -53,7 +39,14 @@ namespace TodoApi.Services.Impl
 
         public TodoModel Create(TodoModel newItem)
         {
-            Todo todo = ModelToEntity(newItem);
+            Todo todo = Mapper.Map<Todo>(newItem);
+
+            // Force certain defaults:
+            todo.IsComplete = false;
+            todo.IsBlocked = false;
+            todo.Status = Shared.TodoStatus.ReadyToBegin;
+            todo.IsActive = true;
+            todo.DateCreated = todo.DateLastChanged = DateTime.UtcNow;
 
             _context.Todo.Add(todo);
             _context.CommitChanges();
@@ -71,7 +64,7 @@ namespace TodoApi.Services.Impl
                 return null;
             }
 
-            todo = ModelToEntity(item);
+            todo = todo = Mapper.Map<Todo>(item);
             todo.Id = item.Id = id;
 
             _context.Todo.Update(todo);

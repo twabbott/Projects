@@ -57,6 +57,7 @@ namespace TodoApi
             {
                 throw new Exception("Connection string not found!");
             }
+
             services
                 .AddDbContext<IAppDbContext, AppDbContext>(opt => opt.UseSqlServer(connectionString));
 

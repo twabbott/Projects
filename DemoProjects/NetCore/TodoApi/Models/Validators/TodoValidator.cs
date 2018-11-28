@@ -1,12 +1,8 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace TodoApi.Models.Validators
 {
-    public class TodoValidator: AbstractValidator<TodoModel>
+    public class TodoValidator : AbstractValidator<TodoModel>
     {
         public TodoValidator()
         {

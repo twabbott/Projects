@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using TodoApi.Store.AppDbContext.Entities;
-
-using TodoApi.Store.AppDbContext;
 using TodoApi.Services.Interfaces;
+using TodoApi.Store.AppDbContext;
+using TodoApi.Store.AppDbContext.Entities;
 
 namespace TodoApi.Services.Impl
 {
-    public class FilterService: IFilterService
+    public class FilterService : IFilterService
     {
         private IAppDbContext _dbContext;
+
         public FilterService(IAppDbContext dbContext)
         {
             _dbContext = dbContext;

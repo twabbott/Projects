@@ -12,7 +12,7 @@ namespace TodoApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20181118172422_TodoDB_Creation")]
-    partial class TodoDB_Creation
+    partial class Creation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

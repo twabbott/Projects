@@ -11,9 +11,9 @@ namespace TodoApi.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        int Id;
+        public int Id { get; set; }
 
-        string Description { get; set; }
+        public string Description { get; set; }
 
         public TodoModel TodoItem { get; set; }
     }

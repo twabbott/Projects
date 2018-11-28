@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Hosting;
-using TodoApi.Store.AppDbContext.Entities;
 using Microsoft.Extensions.Logging;
 using TodoApi.Shared;
-using System;
+using TodoApi.Store.AppDbContext.Entities;
 
 namespace TodoApi.Store.AppDbContext
 {
@@ -24,13 +22,13 @@ namespace TodoApi.Store.AppDbContext
             _logger.LogInformation($"############ Table Todo has {Todo.CountAsync().Result} records.)");
         }
 
-        public DbSet<Todo> Todo{ get; set; }
+        public DbSet<Todo> Todo { get; set; }
 
         public DbSet<Step> Steps { get; set; }
 
         public bool CommitChanges()
         {
-            return (SaveChanges() >= 0);
+            return SaveChanges() >= 0;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

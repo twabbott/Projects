@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -11,25 +12,20 @@ using TodoApi.Models;
 using TodoApi.Models.Validators;
 using TodoApi.Services.Impl;
 using TodoApi.Services.Interfaces;
+using TodoApi.Shared.Exceptions;
 using TodoApi.Store.AppDbContext;
-using System.Threading.Tasks;
-using System;
 
 namespace TodoApi
 {
     public class Startup
     {
-        public static IHostingEnvironment HostEnvironment { get; private set; }
-
         /// <summary>
-        ///     Startup function
+        ///     Initializes a new instance of the <see cref="Startup"/> class.
         /// </summary>
-        /// 
-        /// <param name="configuration"></param>
-        /// 
+        ///
         /// <remarks>
-        ///     This function gets called very first.  Nothing has been 
-        ///     initialized yet, so you can't depend on anything being 
+        ///     This function gets called very first.  Nothing has been
+        ///     initialized yet, so you can't depend on anything being
         ///     configured yet.
         /// </remarks>
         public Startup(IConfiguration configuration)
@@ -38,14 +34,14 @@ namespace TodoApi
             Configuration = configuration;
         }
 
+        public static IHostingEnvironment HostEnvironment { get; private set; }
+
         public IConfiguration Configuration { get; }
 
         /// <summary>
         ///     ConfigureServices method
         /// </summary>
-        /// 
-        /// <param name="services"></param>
-        /// 
+        ///
         /// <remarks>
         ///     Use this method to init all the DI for your app.
         /// </remarks>
@@ -55,7 +51,7 @@ namespace TodoApi
             string connectionString = Configuration["connection-string"];
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new Exception("Connection string not found!");
+                throw new AppInstallationException("Connection string not found!");
             }
 
             services
@@ -82,12 +78,7 @@ namespace TodoApi
         /// <summary>
         ///     Configure method
         /// </summary>
-        /// 
-        /// <param name="app"></param>
-        /// <param name="env"></param>
-        /// <param name="loggerFactory"></param>
-        /// <param name="host"></param>
-        /// 
+        ///
         /// <remarks>
         ///     This method gets called last.  This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </remarks>
@@ -98,9 +89,9 @@ namespace TodoApi
             loggerFactory.AddConsole();
 
             // IHostingEnvironment gets injected for us.  It contains all kinds of info about the
-            // environment that our app is running under.  The IsDevelopment() method checks for a 
+            // environment that our app is running under.  The IsDevelopment() method checks for a
             // system enviornment variable called ASPNETCORE_ENVIRONMENT, which can have three
-            // values: Development, Staging, or Production.  You can set this var in Project 
+            // values: Development, Staging, or Production.  You can set this var in Project
             // Properties, on the debug tab (it should already be set for you).
             if (env.IsDevelopment())
             {
@@ -118,7 +109,7 @@ namespace TodoApi
             // Do all your auto-mapper setup here.
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                // NOTE: mappings are unidirectional, so if you want it to go 
+                // NOTE: mappings are unidirectional, so if you want it to go
                 // both ways, you need to specify both.
                 cfg.CreateMap<Store.AppDbContext.Entities.Todo, Models.TodoModel>();
                 cfg.CreateMap<Models.TodoModel, Store.AppDbContext.Entities.Todo>();

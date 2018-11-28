@@ -1,8 +1,8 @@
-﻿using AutoMapper;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+
+using AutoMapper;
 using TodoApi.Models;
 using TodoApi.Services.Interfaces;
 using TodoApi.Store.AppDbContext;
@@ -10,9 +10,9 @@ using TodoApi.Store.AppDbContext.Entities;
 
 namespace TodoApi.Services.Impl
 {
-    public class TodoService: ITodoService
+    public class TodoService : ITodoService
     {
-        IAppDbContext _context;
+        private IAppDbContext _context;
 
         public TodoService(IAppDbContext context)
         {

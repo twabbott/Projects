@@ -8,9 +8,11 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
+#pragma warning disable SA1615 // Element return value must be documented
+
 namespace TodoApi
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -18,7 +20,6 @@ namespace TodoApi
                 .Build() // Builds an IWebHost instance, which will host our app
                 .Run();  // Runs the web app and blocks the calling thread until the app is shut down.
         }
-
 
         /// <summary>
         ///     This lambda is used by the tooling.  YOU NEED TO DO IT LIKE THIS, because

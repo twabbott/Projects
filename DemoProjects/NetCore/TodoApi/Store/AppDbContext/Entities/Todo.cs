@@ -16,7 +16,7 @@ namespace TodoApi.Store.AppDbContext.Entities
         public string Name { get; set; }
 
         public bool IsComplete { get; set; }
-        
+
         public ICollection<Step> Steps { get; set; } = new List<Step>();
 
         public bool IsBlocked { get; set; }

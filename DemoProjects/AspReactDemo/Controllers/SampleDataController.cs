@@ -6,10 +6,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspReactDemo.Controllers
 {
+    public class blart
+    {
+
+    }
+
+
+
     [Route("api/[controller]")]
     public class SampleDataController : Controller
     {
-        private static string[] Summaries = new[]
+        private static string[] _summaries = new[]
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
@@ -22,14 +29,16 @@ namespace AspReactDemo.Controllers
             {
                 DateFormatted = DateTime.Now.AddDays(index + startDateIndex).ToString("d"),
                 TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
+                Summary = _summaries[rng.Next(_summaries.Length)]
             });
         }
 
         public class WeatherForecast
         {
             public string DateFormatted { get; set; }
+
             public int TemperatureC { get; set; }
+
             public string Summary { get; set; }
 
             public int TemperatureF

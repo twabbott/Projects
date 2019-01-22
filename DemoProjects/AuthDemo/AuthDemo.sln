@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthDemo", "AuthDemo\AuthDemo.csproj", "{69FEA6EF-48D2-45E2-8AFE-B70777B52737}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthDemo", "AuthDemo\AuthDemo.csproj", "{69FEA6EF-48D2-45E2-8AFE-B70777B52737}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieAuthenticationApi", "CookieAuthenticationApi\CookieAuthenticationApi.csproj", "{0EE30A35-2819-4DC8-9B53-B6C14B298D73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{69FEA6EF-48D2-45E2-8AFE-B70777B52737}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69FEA6EF-48D2-45E2-8AFE-B70777B52737}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69FEA6EF-48D2-45E2-8AFE-B70777B52737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EE30A35-2819-4DC8-9B53-B6C14B298D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EE30A35-2819-4DC8-9B53-B6C14B298D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EE30A35-2819-4DC8-9B53-B6C14B298D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EE30A35-2819-4DC8-9B53-B6C14B298D73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

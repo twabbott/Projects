@@ -13,15 +13,17 @@ namespace ConsoleWithDI
         {
             //setup our DI
             var serviceProvider = new ServiceCollection()
-                .AddLogging()
+                .AddLogging(configuration => {
+                    configuration.SetMinimumLevel(LogLevel.Debug);
+                })
                 .AddSingleton<IFooService, FooService>()
                 .AddSingleton<IBarService, BarService>()
                 .BuildServiceProvider();
 
             //configure console logging
             serviceProvider
-                .GetService<ILoggerFactory>()
-                .AddConsole(LogLevel.Debug);
+                .GetService<ILoggingBuilder>()
+                .AddConsole();
 
             var logger = serviceProvider.GetService<ILoggerFactory>()
                 .CreateLogger<Program>();

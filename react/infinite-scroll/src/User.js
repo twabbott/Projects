@@ -25,7 +25,7 @@ export default function User({user}) {
       </div>
       <div>Hobbies:</div>
       <ol>
-        {user.hobbies.map(hobby => <li>{hobby}</li>)}
+        {user.hobbies.map((hobby, idx) => <li key={idx}>{hobby}</li>)}
       </ol>
     </React.Fragment>
   );

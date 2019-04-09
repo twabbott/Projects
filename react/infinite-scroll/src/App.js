@@ -1,8 +1,5 @@
 import React from 'react';
 
-// superagent is a HTTP library, like Fetch or Axios.
-import request from "superagent"; 
-
 import InfiniteScroll from './InfiniteScroll';
 import User from './User';
 import Loader from './Loader';
@@ -52,16 +49,21 @@ class App extends React.Component {
   }
 
   onLoadItems = async () => {
-    console.log("Fetching stuff!");
+    console.log("Fetching stuff, starting at idx=" + this.nextItemKey);
 
     let newItems = undefined;
     try {
-      const response = await request.get('https://randomuser.me/api/?results=10');
+      const response = await fetch('https://randomuser.me/api/?results=10');
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      const json = await response.json();
 
       await this.sleep(2000);
 
       // Creates a transformed array of user data
-      newItems = response.body.results.map(user => ({
+      newItems = json.results.map(user => ({
           key: this.nextItemKey++,
           email: user.email,
           name: Object.values(user.name).join(' '),
@@ -74,7 +76,7 @@ class App extends React.Component {
     } catch (err) {
       // <InfiniteScroll> will catch an error and pass it to the error 
       // render-prop
-      throw new Error("Network error fetching users: " + err.message);
+      throw new Error("Error fetching users: " + err.message);
     }
 
     // On success, return an array of new items.

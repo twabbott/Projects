@@ -5,8 +5,7 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8",
-    "superagent": "^5.0.2"
+    "react-scripts": "2.1.8"
   },
   "scripts": {
     "start": "react-scripts start",

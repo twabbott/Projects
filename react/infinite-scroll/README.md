@@ -6,6 +6,8 @@ Basically I took the sample code and
 * Broke it up into separate components
 * Factored out the `<InfiniteScroll>` component so that its only concern is rendering.  Everything is managed via props and callbacks.
 * Individual `<User>` components have varying heights.  The `<InfiniteScroll>` component can gracefully handle children of varying heights
+* Re-wrote promise logic to use asyc/await
+* Used fetch API instead of superagent.
 
 I am not sure how to get this to work inside an actual child component, since it sets the window.onscroll event.
 

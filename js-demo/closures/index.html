@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    // function outerFunction() {
+    //   let message = "";
+
+    //   return {
+    //     setMessage(text) {
+    //       message = text;
+    //     },
+
+    //     getMessage() {
+    //       return message;
+    //     }
+    //   }
+    // }
+
+    // const messageObj1 = outerFunction();
+    // const messageObj2 = outerFunction();
+
+    // messageObj1.setMessage("This is message one");
+    // messageObj2.setMessage("This is message two");
+
+    // console.log(messageObj1.getMessage());
+    // console.log(messageObj2.getMessage());
+
+    function makeCounter() {
+      let count = 0;
+
+      return function() {
+        return count++;
+      }
+    }
+
+    const counter1 = makeCounter();
+    const counter2 = makeCounter();
+
+    console.log(counter1());
+    console.log(counter2());
+    console.log(counter1());
+    console.log(counter2());
+    console.log(counter1());
+    console.log(counter2());
+
+  </script>
+</body>
+</html>

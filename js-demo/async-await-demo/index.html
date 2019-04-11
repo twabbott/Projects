@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Demonstrate async IIFE</h1>
+    <p>
+        This example demonstrates that a call to an async method (inside an async IIFE) 
+        executes synchronously with code before and after the async call.
+    </p>
+    <p>
+        <em>See the console for details.</em>
+    </p>
+    <script>
+        async function foo() {
+            console.log("This is inside an async function!");
+        }
+
+
+        (() => {
+            console.log("Before the async call.");
+
+            (async () => {
+                await foo();
+            })();
+
+
+            console.log("After the async call.");
+        })();            
+    </script>
+</body>
+</html>

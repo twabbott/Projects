@@ -1,0 +1,15 @@
+.btn-left {
+  margin: 0 15px 0 5px;  
+}
+
+.btn-right {
+  margin: 0 5px 0 15px;
+}
+
+.edit {
+  margin: 5px;
+}
+
+body {
+  margin: 15px;
+}

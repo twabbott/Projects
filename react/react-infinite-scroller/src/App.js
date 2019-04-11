@@ -4,6 +4,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import User from './User';
 import Loader from './Loader';
 import ErrorMessage from './ErrorMessage';
+import Footer from './Footer';
+import { AnimationFrameScheduler } from 'rxjs/internal/scheduler/AnimationFrameScheduler';
 
 class App extends React.Component {
   state = {
@@ -101,24 +103,64 @@ class App extends React.Component {
 
   render() {
     const items = this.state.items.map(user => <User key={user.email} user={user} />);
+    const style = {
+      overflow: 'auto',
+      border: '1px solid black',
+      marginBottom: '30px'
+    };
 
     return (
       <>
         <h1>Infinite Users!</h1>
         <p>Scroll down to load more!!</p>
-        <InfiniteScroll
-          pageStart={0}
-          loadMore={this.onLoadItems}
-          hasMore={this.state.hasMore}
-          loader={<Loader />}
-        >
-          {items}
-        </InfiniteScroll>
+        <div style={style}>
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.onLoadItems}
+            hasMore={this.state.hasMore}
+            loader={<Loader />}
+            useWindow={false}
+          >
+            {items}
+          </InfiniteScroll>
+        </div>
         {this.state.error && <ErrorMessage>{this.state.error}</ErrorMessage>}
         {!this.state.hasMore && !this.state.error && <div>That's as far as it goes!</div>}
+        <Footer>
+          Brought to you by Tom Abbott
+        </Footer>
       </>
     );
   }
 }
 
 export default App;
+/*
+  render() {
+    const items = this.state.items.map(user => <User key={user.email} user={user} />);
+
+    return (
+      <>
+        <h1>Infinite Users!</h1>
+        <p>Scroll down to load more!!</p>
+        <div style={style}>
+          <InfiniteScroll
+            pageStart={0}
+            loadMore={this.onLoadItems}
+            hasMore={this.state.hasMore}
+            loader={<Loader />}
+          >
+            {items}
+          </InfiniteScroll>
+          {this.state.error && <ErrorMessage>{this.state.error}</ErrorMessage>}
+          {!this.state.hasMore && !this.state.error && <div>That's as far as it goes!</div>}
+        </div>
+        <footer>
+          Brought to you by Tom Abbott
+        </footer>
+      </>
+    );
+  }
+
+
+*/

@@ -25,7 +25,17 @@ function mapDispatchToProps(dispatch) {
 }
 
 class App extends Component {
-  onRequestDog = async () => {
+  onRequestDogPromise = () => {
+    // Tell Redux we're about to begin a fetch-cycle.
+    this.props.fetchDog();
+
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then(response => response.json())
+      .then(data => this.props.fetchDogSuccess(data.message))
+      .catch(err => this.props.fetchDogError(err.message));
+  }
+
+  onRequestDogAsync = async () => {
     // Tell Redux we're about to begin a fetch-cycle.
     this.props.fetchDog();
 
@@ -51,7 +61,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Async example</h1>
+          <h1>Fetch Dog - Redux</h1>
           <p>This example demonstrates using redux without middleware to perform an asynchronous operation.</p>
         </header>
         <div>
@@ -63,7 +73,7 @@ class App extends Component {
           {
             fetching ?
               (<button disabled>Fetching...</button>) :
-              (<button onClick={this.onRequestDog}>Fetch a dog</button>)
+              (<button onClick={this.onRequestDogPromise}>Fetch a dog</button>)
           }
         </div>
         <div>

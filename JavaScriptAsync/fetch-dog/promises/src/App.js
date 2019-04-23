@@ -7,24 +7,24 @@ export default class App extends Component {
     error: undefined
   }
 
-  onRequestDog = async () => {
+  onRequestDog = () => {
     this.setState({
       fetching: true,
       error: undefined
     });
 
-    try {
-      const response = await fetch('https://dog.ceo/api/breeds/image/random');
-      const json = await response.json();
-
-      this.setState({
-        dog: json.message
-      });      
-    } catch (err) {
-      this.setState({
-        error: err.message
-      });
-    }
+    fetch('https://dog.ceo/api/breeds/image/random')
+      .then(response => response.json())
+      .then(data => 
+        this.setState({
+          dog: data.message
+       })
+      )
+      .catch(err => 
+        this.setState({
+          error: err.message
+        })
+      );
   }
 
   onImageLoad = () => {
@@ -39,8 +39,8 @@ export default class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Async example</h1>
-          <p>This example demonstrates using async/await and fetch() to load an image of a dog.</p>
+          <h1>Fetch Dog</h1>
+          <p>This example demonstrates using promises to perform an asynchronous operation.</p>
         </header>
         <div>
           { fetching && "Fetching a dog..."}

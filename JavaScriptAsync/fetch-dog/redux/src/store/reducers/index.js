@@ -1,22 +1,29 @@
 export const FETCH_DOG = 'FETCH_DOG';
 export const FETCH_DOG_SUCCESS = 'FETCH_DOG_SUCCESS';
 export const FETCH_DOG_ERROR = 'FETCH_DOG_ERROR';
+export const FETCH_DOG_COMPLETE = 'FETCH_DOG_COMPLETE';
 
 export const fetchDogAction = () => (
     { type: FETCH_DOG }
 );
 
-export const fetchDogSuccess = (dog) => (
+export const fetchDogSuccessAction = (dog) => (
     {
         type: FETCH_DOG_SUCCESS,
         dog
     }
 );
 
-export const fetchDogError = (error) => (
+export const fetchDogErrorAction = (error) => (
     {
         type: FETCH_DOG_ERROR,
         error
+    }
+);
+
+export const fetchDogLoadCompleteAction = () => (
+    {
+        type: FETCH_DOG_COMPLETE
     }
 );
 
@@ -26,7 +33,7 @@ const initialState = {
     error: null
 };
 
-export function rootReducer(state = initialState, action) {
+export default function rootReducer(state = initialState, action) {
     switch (action.type) {
         case FETCH_DOG:
             console.log("Redux: FETCH_DOG");
@@ -40,7 +47,6 @@ export function rootReducer(state = initialState, action) {
             console.log("Redux: FETCH_DOG_SUCCESS");
             return {
                 ...state,
-                fetching: false,
                 dog: action.dog
             };
 
@@ -50,6 +56,13 @@ export function rootReducer(state = initialState, action) {
                 ...state,
                 fetching: false,
                 error: action.error
+            };
+
+        case FETCH_DOG_COMPLETE:
+            console.log("Redux: FETCH_DOG_COMPLETE");
+            return {
+                ...state,
+                fetching: false
             };
 
         default:

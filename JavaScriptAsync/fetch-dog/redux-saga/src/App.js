@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchDogLoadCompleteAction } from './store/reducers';
-import { fetchDogThunkAsync } from './store/thunks';
+import { fetchDogAction, fetchDogLoadCompleteAction } from './store/reducers';
 
 function mapStateToProps(state) {
   return {
@@ -13,7 +12,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    fetchDogThunk: () => dispatch(fetchDogThunkAsync()),
+    fetchDog: () => dispatch(fetchDogAction()),
     fetchDogLoadComplete: () => dispatch(fetchDogLoadCompleteAction())
   }
 }
@@ -24,16 +23,15 @@ class App extends Component {
   }
 
   render() {
-    const { fetching, dog, error, fetchDogThunk } = this.props;
+    const { fetching, dog, error, fetchDog } = this.props;
 
     return (
       <div className="App">
         <header className="App-header">
-          <h1>Async example</h1>
+          <h1>Fetch Dog - Redux with Redux-Saga</h1>
           <p>
-            This example demonstrates using redux-thunk middleware to perform 
-            an asynchronous operation.  I have two thunks, one that uses promises,
-            and another that uses async/await.</p>
+            This example demonstrates using redux-saga middleware to perform 
+            an asynchronous operation.</p>
         </header>
         <div>
           { fetching && "Fetching a dog..."}
@@ -44,7 +42,7 @@ class App extends Component {
           {
             fetching ?
               (<button disabled>Fetching...</button>) :
-              (<button onClick={fetchDogThunk}>Fetch a dog</button>)
+              (<button onClick={fetchDog}>Fetch a dog</button>)
           }
         </div>
         <div>

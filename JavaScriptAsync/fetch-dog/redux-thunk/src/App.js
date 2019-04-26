@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchDogLoadCompleteAction } from './store/reducers';
-import { fetchDogThunkAsync } from './store/thunks';
+import { fetchDogThunkPromise, fetchDogThunkAsync } from './store/thunks';
 
 function mapStateToProps(state) {
   return {

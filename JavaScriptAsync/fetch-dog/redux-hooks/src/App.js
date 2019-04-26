@@ -55,7 +55,7 @@ export default function App(props) {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Fetch Dog - Redux</h1>
+        <h1>Fetch Dog - Redux + hooks</h1>
         <p>This example demonstrates using redux and React hooks react-redux, without middleware to perform an asynchronous operation.</p>
         <p>Resources for further reading:</p>
         <ul>

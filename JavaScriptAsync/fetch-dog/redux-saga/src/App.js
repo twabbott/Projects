@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchDogAction, fetchDogLoadCompleteAction } from './store/reducers';
+
+import { 
+  isFetchingSelector,
+  dogUrlSelector,
+  errorMessageSelector,
+  fetchDogAction,
+  fetchDogLoadCompleteAction 
+} from './store';
 
 function mapStateToProps(state) {
   return {
-    fetching: state.fetching,
-    dog: state.dog,
-    error: state.error
+    fetching: isFetchingSelector(state),
+    dog: dogUrlSelector(state),
+    error: errorMessageSelector(state)
   };
 }
 

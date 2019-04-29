@@ -1,9 +1,9 @@
 import { createStore } from 'redux';
 
-import rootReducer from './reducers/reducer';
+import rootReducer from './reducer';
 
-export * from './reducers/actions';
-export * from './reducers/selectors';
+export * from './actions';
+export * from './selectors';
 
 const reduxStore = createStore(
     rootReducer

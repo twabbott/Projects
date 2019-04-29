@@ -1,8 +1,11 @@
 import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
 
-import rootReducer from "./reducers";
-import { watcherSaga } from "./sagas";
+import rootReducer from './reducers/reducer';
+import { watcherSaga } from "./sagas/fetchDog";
+
+export * from './reducers/actions';
+export * from './reducers/selectors';
 
 const sagaMiddleware = createSagaMiddleware();
 

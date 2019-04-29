@@ -1,4 +1,5 @@
-import * as actions from "../reducers";
+import * as actions from "../reducers/actions";
+import { FETCH_DOG } from "../reducers/reducer";
 
 import {
     takeLatest,
@@ -11,7 +12,7 @@ export function* watcherSaga() {
     // This is a one-time setup step.  We need to tell redux-saga to
     // watch for every occurrence of the FETCH_DOG action, and when
     // the action is complete then call our workerSaga() function.
-    yield takeLatest(actions.FETCH_DOG, workerSaga);
+    yield takeLatest(FETCH_DOG, workerSaga);
 
     console.log("watcherSaga: complete");
 };

@@ -1,6 +1,9 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore } from 'redux';
 
-import rootReducer from './reducers';
+import rootReducer from './reducer';
+
+export * from './actions';
+export * from './selectors';
 
 const reduxStore = createStore(
     rootReducer

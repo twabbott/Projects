@@ -2,7 +2,7 @@ import {
   fetchDogAction, 
   fetchDogSuccessAction, 
   fetchDogErrorAction
-} from '../reducers';
+} from '../reducers/actions';
 
 /* The word "thunk" is a play on words.  It's past-tense of "think".
  *

@@ -4,14 +4,17 @@ import {
   fetchDogAction,
   fetchDogSuccessAction,
   fetchDogErrorAction,
-  fetchDogLoadCompleteAction
-} from './store/reducers/';
+  fetchDogLoadCompleteAction,
+  isFetchingSelector,
+  dogUrlSelector,
+  errorMessageSelector
+} from './store';
 
 function mapStateToProps(state) {
   return {
-    fetching: state.fetching,
-    dog: state.dog,
-    error: state.error
+    fetching: isFetchingSelector(state),
+    dog: dogUrlSelector(state),
+    error: errorMessageSelector(state)
   };
 }
 

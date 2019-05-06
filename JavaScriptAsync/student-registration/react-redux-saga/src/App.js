@@ -1,34 +1,40 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { readAllStudentsBeginAction } from "./store";
-import StudentTable from "./studentTable";
-import StudentForm from "./studentForm";
+import { 
+  readAllStudentsBeginAction,
+  appStateIsFormVisibleSelector
+} from "./store";
+import StudentList from "./StudentList";
+import StudentForm from "./StudentForm";
 
-const mapStateToProps = state => {
-    return { 
-        isFormVisible: state.appState.isFormVisible,
-    };
-}
+function mapStateToProps(state) {
+  return {
+    isFormVisible: appStateIsFormVisibleSelector(state)
+  };
+};
 
-const mapDispatchToProps = dispatch => {
-    return {
-        readAllStudents: () => dispatch(readAllStudentsBeginAction())
-    };
-}
+function mapDispatchToProps(dispatch) {
+  return {
+    readAllStudents: () => dispatch(readAllStudentsBeginAction())
+  };
+};
 
 class App extends React.Component {
-    componentDidMount() {
-        this.props.readAllStudents();
-    }
+  componentDidMount() {
+    this.props.readAllStudents();
+  }
 
-    render() {
-        return (
-            <div className="container">
-                {this.props.isFormVisible? <StudentForm />: <StudentTable />}
-            </div>
-        );
-    }
+  render() {
+    return (
+      <div className="container">
+        {this.props.isFormVisible ? <StudentForm /> : <StudentList />}
+      </div>
+    );
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);

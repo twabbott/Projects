@@ -1,16 +1,12 @@
 import { combineReducers } from "redux";
 
-import appStateReducer from "./appStateReducer";
-import studentReducer from "./studentReducer";
-
-import { logErrorAction } from "./appStateReducer";
-
-const xxx = logErrorAction("Yerp!");
+import appStateReducer from "./appState/reducer";
+import studentReducer from "./students/reducer";
 
 // Combine all reducers here into one glorious über-reducer!
 const rootReducer = combineReducers({
-    appState: appStateReducer,
-    students: studentReducer
+  appState: appStateReducer,
+  students: studentReducer
 });
 
 export default rootReducer;

@@ -6,10 +6,10 @@ import updateStudentWatcherSaga from "./updateStudent.saga";
 import deleteStudentWatcherSaga from "./deleteStudent.saga";
 
 export default function* rootSaga() {
-    yield all([
-        call(readAllStudentsWatcherSaga),
-        call(addStudentWatcherSaga),
-        call(updateStudentWatcherSaga),
-        call(deleteStudentWatcherSaga)
-    ]);
+  yield all([
+    call(readAllStudentsWatcherSaga),
+    call(addStudentWatcherSaga),
+    call(updateStudentWatcherSaga),
+    call(deleteStudentWatcherSaga)
+  ]);
 }

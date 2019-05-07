@@ -36,7 +36,10 @@ const sagaMiddleware = createSagaMiddleware();
 
 // Step 2: Call redux to create the store, and tell Redux to apply our
 //         middleware
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+const store = createStore(
+  rootReducer, 
+  {}, // Empty initial state.  This is set by the individual reducers.
+  applyMiddleware(sagaMiddleware));
 
 // Step 3: run our middleware
 sagaMiddleware.run(rootSaga);

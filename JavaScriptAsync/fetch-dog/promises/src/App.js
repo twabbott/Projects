@@ -38,7 +38,7 @@ export default class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
+        <header>
           <h1>Fetch Dog</h1>
           <p>This example demonstrates using promises to perform an asynchronous operation.</p>
         </header>

@@ -3,6 +3,8 @@ import { connect } from "react-redux";
 
 import {
   showCreateStudentFormAction,
+  showEditStudentFormAction,
+  deleteStudentBeginAction,
   studentsAllStudentsSelector,
   studentsIsUpdatingSelector,
   studentsUpdateErrorSelector
@@ -19,26 +21,36 @@ function mapStateToProps(state) {
   };
 };
 
-function mapDispatchToProps(dispatch) {
-  return {
-    onCreateBtnClicked: () => dispatch(showCreateStudentFormAction())
-  };
+const mapDispatchToProps = {
+  showCreateStudentFormAction,
+  showEditStudentFormAction,
+  deleteStudentBeginAction
 };
 
-function StudentList({students, updating, error, onCreateBtnClicked}) {
+function StudentList({
+  students, 
+  updating, 
+  error, 
+  showCreateStudentFormAction,
+  showEditStudentFormAction,
+  deleteStudentBeginAction
+}) {
   return (
     <div>
       <h1>Student Registration</h1>
       <button
         type="button"
         className="btn btn-primary"
-        onClick={onCreateBtnClicked}
+        onClick={showCreateStudentFormAction}
       >
         Create Student
       </button>
       <span> {updating && <i>Updating...</i>}</span>
       {error && <div className="text-white bg-danger">{error}</div>}
-      <Table students={students} />
+      <Table 
+        students={students}
+        showEditStudentFormAction={showEditStudentFormAction} 
+        deleteStudentBeginAction={deleteStudentBeginAction} />
       <StudentCount students={students} />
 
       <footer>

@@ -1,25 +1,10 @@
 import React from "react";
-import { connect } from "react-redux";
 
-import { 
-  showEditStudentFormAction,
-  deleteStudentBeginAction 
-} from "./store";
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onEditBtnClicked: student => 
-      dispatch(showEditStudentFormAction(student)),
-    onDeleteBtnClicked: student =>
-      dispatch(deleteStudentBeginAction(student.id))
-  };
-};
-
-function TableRow(props) {
-  const { uvuId, lastName, firstName, male } = props.student;
+export default function TableRow(props) {
+  const { id, uvuId, lastName, firstName, male } = props.student;
 
   const _onEditBtnClicked = () => {
-    props.onEditBtnClicked(props.student);
+    props.showEditStudentFormAction(props.student);
   };
 
   const _onDeleteBtnClicked = () => {
@@ -28,7 +13,7 @@ function TableRow(props) {
       return;
     }
 
-    props.onDeleteBtnClicked(props.student);
+    props.deleteStudentBeginAction(id);
   };
 
   return (
@@ -57,8 +42,3 @@ function TableRow(props) {
     </tr>
   );
 };
-
-export default connect(
-  null,
-  mapDispatchToProps
-)(TableRow);

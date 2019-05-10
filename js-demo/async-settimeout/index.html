@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Async setTimeout() Demo</title>
+
+  <link rel="stylesheet" href="site.css">
 </head>
 <body>
   <h1>Async setTimeout() Demo</h1>
@@ -20,56 +22,6 @@
   <div id="page-console">    
   </div>
 
-  <script>
-    const pageConsole = document.getElementById("page-console");
-    pageConsole.writeLine = function(text) {
-      const newLine = document.createElement("div");
-      newLine.style.color="blue";
-      newLine.innerText = text;
-      pageConsole.appendChild(newLine);
-    }
-    pageConsole.style.padding = "15px";
-    pageConsole.style.fontFamily = "monospace";
-    pageConsole.style.backgroundColor = "rgb(196,196,196)";
-  </script>
-
-  <script>
-      async function sleep(msTime) {
-        return new Promise(resolve => setTimeout(resolve, msTime));
-      }
-
-      async function slowLoop() {
-        for (let i = 0; i < 10; i++) {
-          pageConsole.writeLine(i);
-          await sleep(1000);
-        }
-      }
-
-      /***************************************************
-       ** Example of calling an async function from a non-async
-       ** function.  In this case, slowLoop will return immediately
-       ** and this code will run to completion.  Then the promise
-       ** will complete later.  The output will be: Started, 0, 
-       ** Finhed, 1, 2, 3, etc...
-       **/
-      //(() => { // IIFE is completely superflous.
-      // pageConsole.writeLine("Started");
-      // await slowLoop();
-      // pageConsole.writeLine("Finished");
-      //})();
-
-
-      /***************************************************
-       ** Example of calling an async funciton within an async function.
-       ** This function will execute in a synchronous manner without ever
-       ** blocking.  Output will be: Started, 0, 1, 2, ... 8, 9, Finished
-       **/
-      (async () => {
-        pageConsole.writeLine("Started");
-        await slowLoop();
-        pageConsole.writeLine("Finished");
-      })();
-  </script>
-
+  <script src="./scripts/index.js" type="module"></script>
 </body>
 </html>

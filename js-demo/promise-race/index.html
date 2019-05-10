@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Async setTimeout() Demo</title>
+
+  <link rel="stylesheet" href="site.css">
+</head>
+<body>
+  <h1>Async setTimeout() Demo</h1>
+  <p>
+    This is a demo of using ES6's async keyword to set a timer.
+    You should see .
+  </p>
+  <p>
+    This sample also shows what happens when you call an async
+    function without using await.  Basically the async function returns right away,
+    and the promise completes as soon as the calling code has run to completion.
+  </p>
+  <div id="page-console">    
+  </div>
+
+  <script src="./scripts/index.js" type="module"></script>
+</body>
+</html>

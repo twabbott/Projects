@@ -1,0 +1,7 @@
+#page-console {
+  padding: 15px;
+  font-family: monospace;
+  color: rgb(223, 220, 187);
+  background-color: rgb(34, 32, 4);
+  overflow-y: auto;
+}

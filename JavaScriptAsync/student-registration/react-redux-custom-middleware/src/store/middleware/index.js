@@ -22,5 +22,12 @@ const middleware = store => {
   }
 }
 
+const myMiddleware = store => next => action => {
+  next(action);
+
+  store.getState()
+
+  store.dispatch(someAction(...))
+}
 
 export default middleware;

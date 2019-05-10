@@ -46,23 +46,21 @@ export function fetchDogThunkPromise() {
  */ 
 
 
-export function fetchDogThunkAsync() {
-  return async dispatch => {
-    try {
-      // Tell Redux that we're loading
-      dispatch(fetchDogAction());
+export const fetchDogThunkAsync = () => async (dispatch) => {
+  try {
+    // Tell Redux that we're loading
+    dispatch(fetchDogAction());
 
-      // Fetch the data
-      const response = await fetch('https://dog.ceo/api/breeds/image/random');
+    // Fetch the data
+    const response = await fetch('https://dog.ceo/api/breeds/image/random');
 
-      // Get the JSON payload from the response
-      const json = await response.json();
+    // Get the JSON payload from the response
+    const json = await response.json();
 
-      // Tell Redux that we have data
-      dispatch(fetchDogSuccessAction(json.message));
-    } catch (err) {
-      // There was an error.  Tell Redux about it.
-      dispatch(fetchDogErrorAction(err.message))
-    }
-  };
-}
+    // Tell Redux that we have data
+    dispatch(fetchDogSuccessAction(json.message));
+  } catch (err) {
+    // There was an error.  Tell Redux about it.
+    dispatch(fetchDogErrorAction(err.message))
+  }
+};

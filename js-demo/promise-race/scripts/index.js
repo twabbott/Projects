@@ -6,7 +6,8 @@ async function sleep(msTime) {
 
 async function someDay(name) {
   // Sleep between 1 and 5 seconds
-  await sleep(4000 * Math.random() + 1000);
+  const timeout = 4000 * Math.random() + 1000;
+  await sleep(timeout);
 
   // Throw an exception 20% of the time
   if (Math.random() <= .20) {
@@ -14,6 +15,7 @@ async function someDay(name) {
   }
 
   // Otherwise return successfully
+  writeLine(`${name} completed in ${timeout}ms.`)
   return name;
 }
 

@@ -9,15 +9,15 @@
   <link rel="stylesheet" href="site.css">
 </head>
 <body>
-  <h1>Async setTimeout() Demo</h1>
+  <h1>Promise.race() Demo</h1>
   <p>
-    This is a demo of using ES6's async keyword to set a timer.
-    You should see .
+    In this demo I call a bunch of async functions and wait for the first one to complete. 
+    There is a 20% chance that one of the functions will fail.  Notice that all of the 
+    async functions run to completion, but Promise.race() only returns the value of the
+    first promise that resolved or rejected.
   </p>
   <p>
-    This sample also shows what happens when you call an async
-    function without using await.  Basically the async function returns right away,
-    and the promise completes as soon as the calling code has run to completion.
+    Refresh the page to re-run the demonstration.
   </p>
   <div id="page-console">    
   </div>

@@ -1,11 +1,9 @@
 // Actions permute the store in some way (create, update, or delete).
 
-import { 
-  FETCH_DOG,
-  FETCH_DOG_SUCCESS,
-  FETCH_DOG_ERROR,
-  FETCH_DOG_COMPLETE
-} from './reducer';
+export const FETCH_DOG = 'FETCH_DOG';
+export const FETCH_DOG_SUCCESS = 'FETCH_DOG_SUCCESS';
+export const FETCH_DOG_ERROR = 'FETCH_DOG_ERROR';
+export const FETCH_DOG_COMPLETE = 'FETCH_DOG_COMPLETE';
 
 export const fetchDogAction = () => (
   { type: FETCH_DOG }

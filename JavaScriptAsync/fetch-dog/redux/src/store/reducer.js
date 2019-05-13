@@ -1,9 +1,11 @@
-export const FETCH_DOG = 'FETCH_DOG';
-export const FETCH_DOG_SUCCESS = 'FETCH_DOG_SUCCESS';
-export const FETCH_DOG_ERROR = 'FETCH_DOG_ERROR';
-export const FETCH_DOG_COMPLETE = 'FETCH_DOG_COMPLETE';
-
-const initialState = {
+import { 
+    FETCH_DOG,
+    FETCH_DOG_SUCCESS,
+    FETCH_DOG_ERROR,
+    FETCH_DOG_COMPLETE
+  } from './actions';
+  
+  const initialState = {
     fetching: false,
     dog: null,
     error: null

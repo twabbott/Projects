@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -64,6 +65,21 @@ namespace TodoApi
                 .AddXmlSerializerFormatters()
                 .AddFluentValidation();
 
+            services.AddLogging(logging =>
+            {
+                logging.AddConsole();
+                logging.AddDebug();
+            });
+
+            // Auto Mapper Configurations
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new AutoMapperProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+
             // Add all custom DI mappings for your services/etc. here.  For more info
             // on lifetime, see this article: https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-2.1#service-lifetimes
             services
@@ -82,11 +98,9 @@ namespace TodoApi
         /// <remarks>
         ///     This method gets called last.  This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </remarks>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, IServiceProvider host)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider host)
         {
             HostEnvironment = env; // cache this for later use (a bit of Tom code)
-
-            loggerFactory.AddConsole();
 
             // IHostingEnvironment gets injected for us.  It contains all kinds of info about the
             // environment that our app is running under.  The IsDevelopment() method checks for a
@@ -105,15 +119,6 @@ namespace TodoApi
             }
 
             app.UseHttpsRedirection();
-
-            // Do all your auto-mapper setup here.
-            AutoMapper.Mapper.Initialize(cfg =>
-            {
-                // NOTE: mappings are unidirectional, so if you want it to go
-                // both ways, you need to specify both.
-                cfg.CreateMap<Store.AppDbContext.Entities.Todo, Models.TodoModel>();
-                cfg.CreateMap<Models.TodoModel, Store.AppDbContext.Entities.Todo>();
-            });
 
             app.UseMvc();
 

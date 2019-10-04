@@ -20,3 +20,6 @@
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules",    "SA1611:Element parameters must be documented", Justification = "Nope")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules",    "SA1633:File must have header", Justification = "Code is for internal use only.")]
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.DocumentationRules",    "SA1652:Enable XML documentation output", Justification = "This is just a noisy rule.")]
+
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "nobody cares", Scope = "namespace", Target = "TodoApi")]
+[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:Collection properties should be read only", Justification = "I disagree", Scope = "namespace", Target = "TodoApi")]

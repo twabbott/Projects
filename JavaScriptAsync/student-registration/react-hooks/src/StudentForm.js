@@ -1,209 +1,179 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 
-export default class FormDemo extends Component {
-    constructor(props) {
-        super(props);
+export default function StudentForm({
+    student,
+    loading,
+    error,
+    onSubmit,
+    onCancelBtnClicked
+}) {
+    const [firstName, setFirstName] = useState(student? student.firstName: "");
+    const [firstNameError, setFirstNameError] = useState("");
+    const [lastName, setLastName] = useState(student? student.lastName: "");
+    const [lastNameError, setLastNameError] = useState("");
+    const [gender, setGender] = useState(student ? (student.male ? "male" : "female") : "");
+    const [genderError, setGenderError] = useState("");
+    const [uvuId, setUvuId] = useState(student? student.uvuId: "");
+    const [uvuIdError, setUvuIdError] = useState("");
+    const [race, setRace] = useState(student? student.race: "");
+    const [raceError, setRaceError] = useState("");
+    const [age, setAge] = useState(student? student.age: "");
+    const [ageError, setAgeError] = useState("");
+    const [isVeteran, setIsVeteran] = useState(student? student.isVeteran: false);
 
-        this.state = {
-            firstName: this.props.student? this.props.student.firstName: "",
-            firstNameError: "",
-
-            lastName:this.props.student? this.props.student.lastName:  "",
-            lastNameError: "",
-            
-            gender: this.props.student ?
-                (this.props.student.male ? "male" : "female") :
-                "",
-            genderError: "",
-            
-            uvuId: this.props.student? this.props.student.uvuId: "",
-            uvuIdError: "",
-            
-            race: this.props.student? this.props.student.race: "",
-            raceError: "",
-            
-            age: this.props.student? this.props.student.age: "",
-            ageError: "",
-            
-            isVeteran: this.props.student? this.props.student.isVeteran : false
-        };
-
-        this._onInputChanged = this._onInputChanged.bind(this);
-        this._onFormSubmit = this._onFormSubmit.bind(this);
-    }
-
-    _onInputChanged(event) {
-        // Get the control (React calls it the 'target').
-        let target = event.target;
-
-        // If it's a checkbox, it's value comes from the checked property, 
-        // otherwise take the control's value property.
-        let value = target.type === 'checkbox' ? target.checked : target.value;
-
-        // Get the control's name.
-        let name = target.name;
-
-        // Set the state.
-        this.setState({
-            [name]: value
-        });
-    }
-
-    _onFormSubmit() {
+    function onFormSubmit() {
         let isValid = true;
-        let newState = {};
 
-        if (this.state.firstName === "") {
+        if (firstName === "") {
             isValid = false;
-            newState.firstNameError = "First name not given";
+            setFirstNameError("First name not given");
         }
         else {
-            newState.firstNameError = "";
+            setFirstNameError("");
         }
 
-        if (this.state.lastName === "") {
+        if (lastName === "") {
             isValid = false;
-            newState.lastNameError = "Last name not given";
+            setLastNameError("Last name not given");
         }
         else {
-            newState.lastNameError = "";
+            setLastNameError("");
         }
 
-        if (this.state.gender === "") {
+        if (gender === "") {
             isValid = false;
-            newState.genderError = "No gender specified";
+            setGenderError("No gender specified");
         }
         else {
-            newState.genderError = "";
+            setGenderError("");
         }
 
-        let uvuId = parseInt(this.state.uvuId);
-        if (this.state.uvuId === "") {
+        if (uvuId === "") {
             isValid = false;
-            newState.uvuIdError = "UVU ID not given";
-        }
-        else if (isNaN(uvuId) || uvuId < 10000000 || uvuId > 99999999) {
-            isValid = false;
-            newState.uvuIdError = "UVU ID must be an 8-digit number";
+            setUvuIdError("UVU ID not given");
         }
         else {
-            newState.uvuIdError = "";
+            const num = parseInt(uvuId);
+            if (isNaN(num) || num < 10000000 || num > 99999999) {
+                isValid = false;
+                setUvuIdError("UVU ID must be an 8-digit number");
+            }
+            else {
+                setUvuIdError("");
+            }
+        } 
+
+        if (race === "") {
+            isValid = false;
+            setRaceError("No race selected");
+        }
+        else {
+            setRaceError("");
         }
 
-        if (this.state.race === "") {
+        if (age === "") {
             isValid = false;
-            newState.raceError = "No race selected";
+            setAgeError("Age not given");
         }
         else {
-            newState.raceError = "";
-        }
-
-        let age = parseInt(this.state.age);
-        if (this.state.age === "") {
-            isValid = false;
-            newState.ageError = "Age not given";
-        }
-        else if (isNaN(age) || age < 16 || age > 120) {
-            isValid = false;
-            newState.ageError = "Age must be between 16 and 120";
-        }
-        else {
-            newState.ageError = "";
+            let num = parseInt(age);
+            if (isNaN(num) || num < 16 || num > 120) {
+                isValid = false;
+                setAgeError("Age must be between 16 and 120");
+            }
+            else {
+                setAgeError("");
+            }
         }
 
         if (!isValid) {
-            this.setState(newState);
             return;
         }
 
-        this.props.onSubmit(
-            this.props.student ? this.props.student.id : 0,
-            this.state.firstName,
-            this.state.lastName,
-            this.state.gender === "male",
+        onSubmit(
+            student ? student.id : 0,
+            firstName,
+            lastName,
+            gender === "male",
             uvuId,
-            this.state.race,
+            race,
             age,
-            this.state.isVeteran);
+            isVeteran);
     }
 
-    render () {
-        let formTitle = this.props.student? "Edit Student": "New Student";
+    return (<div>
+        <h1>{student? "Edit Student": "New Student"}</h1>
+        <form>
+            <div className="form-group">
+                <label htmlFor="fname">First name:</label>
+                <input type="text" id="fname" name="firstName" className="form-control" 
+                    value={firstName} onChange={event => setFirstName(event.target.value)} />
+                <div className="text-white bg-danger">{firstNameError}</div>
+            </div>
 
-        return (<div>
-            <h1>{formTitle}</h1>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="fname">First name:</label>
-                    <input type="text" id="fname" name="firstName" className="form-control" 
-                        value={this.state.firstName} onChange={this._onInputChanged} />
-                    <div className="text-white bg-danger">{this.state.firstNameError}</div>
-                </div>
+            <div className="form-group">
+                <label htmlFor="lname">Last name:</label>
+                <input type="text" id="lname" name="lastName" className="form-control" 
+                value={lastName} onChange={event => setLastName(event.target.value)} />
+                <div className="text-white bg-danger">{lastNameError}</div>
+            </div>
 
-                <div className="form-group">
-                    <label htmlFor="lname">Last name:</label>
-                    <input type="text" id="lname" name="lastName" className="form-control" 
-                    value={this.state.lastName} onChange={this._onInputChanged} />
-                    <div className="text-white bg-danger">{this.state.lastNameError}</div>
+            <div className="form-group">
+                <label>Gender:</label>
+                <div className="radio">
+                    <input type="radio" id="genderMaleRadio" name="gender" value="male" 
+                        checked={gender==="male"} onChange={event => setGender(event.target.value)} />
+                    <label htmlFor="genderMaleRadio">Male</label>
                 </div>
+                <div className="radio">
+                    <input type="radio" id="genderFemaleRadio" name="gender" value="female" 
+                        checked={gender==="female"} onChange={event => setGender(event.target.value)}/>
+                    <label htmlFor="genderFemaleRadio">Female</label>
+                </div>
+                <div className="text-white bg-danger">{genderError}</div>
+            </div>
 
-                <div className="form-group">
-                    <label>Gender:</label>
-                    <div className="radio">
-                        <input type="radio" id="genderMaleRadio" name="gender" value="male" 
-                            checked={this.state.gender==="male"} onChange={this._onInputChanged} />
-                        <label htmlFor="genderMaleRadio">Male</label>
-                    </div>
-                    <div className="radio">
-                        <input type="radio" id="genderFemaleRadio" name="gender" value="female" 
-                            checked={this.state.gender==="female"} onChange={this._onInputChanged}/>
-                        <label htmlFor="genderFemaleRadio">Female</label>
-                    </div>
-                    <div className="text-white bg-danger">{this.state.genderError}</div>
-                </div>
+            <div className="form-group">
+                <label htmlFor="uvuid">UVU ID:</label>
+                <input type="text" id="uvuid" name="uvuId" className="form-control" 
+                    value={uvuId} onChange={event => setUvuId(event.target.value)} />
+                <div className="text-white bg-danger">{uvuIdError}</div>
+            </div>
 
-                <div className="form-group">
-                    <label htmlFor="uvuid">UVU ID:</label>
-                    <input type="text" id="uvuid" name="uvuId" className="form-control" 
-                        value={this.state.uvuId} onChange={this._onInputChanged} />
-                    <div className="text-white bg-danger">{this.state.uvuIdError}</div>
-                </div>
+            <div className="form-group">
+                <label htmlFor="race">Race</label>
+                <select id="race" name="race" className="form-control" 
+                    value={race} onChange={event => setRace(event.target.value)}>
+                    <option value="">(not selected)</option>
+                    <option value="caucasian">Caucasian</option>
+                    <option value="black">Black</option>
+                    <option value="hispanic">Hispanic</option>
+                    <option value="asian">Asian</option>
+                    <option value="other">Other</option>
+                </select>
+                <div className="text-white bg-danger">{raceError}</div>
+            </div>
 
-                <div className="form-group">
-                    <label htmlFor="race">Race</label>
-                    <select id="race" name="race" className="form-control" 
-                        value={this.state.race} onChange={this._onInputChanged}>
-                        <option value="">(not selected)</option>
-                        <option value="caucasian">Caucasian</option>
-                        <option value="black">Black</option>
-                        <option value="hispanic">Hispanic</option>
-                        <option value="asian">Asian</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <div className="text-white bg-danger">{this.state.raceError}</div>
-                </div>
+            <div className="form-group">
+                <label htmlFor="age">Age</label>
+                <input type="text" id="age" name="age" className="form-control" 
+                    value={age} onChange={event => setAge(event.target.value)} />
+                <div className="text-white bg-danger">{ageError}</div>
+            </div>
 
-                <div className="form-group">
-                    <label htmlFor="age">Age</label>
-                    <input type="text" id="age" name="age" className="form-control" 
-                        value={this.state.age} onChange={this._onInputChanged} />
-                    <div className="text-white bg-danger">{this.state.ageError}</div>
-                </div>
-
-                <div className="checkbox">
-                    <input type="checkbox" id="isveteran" name="isVeteran"
-                        checked={this.state.isVeteran} onChange={this._onInputChanged} />
-                    <label htmlFor="isveteran">Are you a US veteran?</label>
-                </div>
-                <button type="button" id="saveBtn" className="btn btn-primary"
-                    disabled={this.props.loading} onClick={this._onFormSubmit}>Save</button>
-                <button type="button" id="cancelBtn" className="btn btn-warning"
-                    disabled={this.props.loading} onClick={this.props.onCancelBtnClicked}>Cancel</button>
-                { this.props.loading && <span>Updating...</span> }
-                { this.props.error && <span>{this.props.error}</span> }
-            </form>
-        </div>);
-    }
+            <div className="checkbox">
+                <input type="checkbox" id="isveteran" name="isVeteran"
+                    checked={isVeteran} onChange={event => setIsVeteran(event.target.checked)} />
+                <label htmlFor="isveteran">Are you a US veteran?</label>
+            </div>
+            <button type="button" id="saveBtn" className="btn btn-primary"
+                disabled={loading} onClick={onFormSubmit}>Save</button>
+            <button type="button" id="cancelBtn" className="btn btn-warning"
+                disabled={loading} onClick={onCancelBtnClicked}>Cancel</button>
+            { loading && <span>Updating...</span> }
+            { error && <span>{error}</span> }
+        </form>
+    </div>);
 }
 
 

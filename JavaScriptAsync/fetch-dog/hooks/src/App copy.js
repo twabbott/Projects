@@ -1,53 +1,32 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-async function fetchDogAsync(val) {
-  console.log("parameter value=" + val);
-  return await axios('https://dog.ceo/api/breeds/image/random');
-}
-
-function useAsync(callback) {
-  const callbackRef = useRef();
-  const [isBusy, setIsBusy] = useState(false);
-  const [result, setResult] = useState(undefined);
+export default function App() {
+  const [fetching, setFetching] = useState(false);
+  const [dogImgUrl, setDogImgUrl] = useState(undefined);
   const [error, setError] = useState(undefined);
 
-  useEffect(() => { 
-    callbackRef.current = callback;
-  }, [callback]);
-
-  async function wrapperFunc(...args) {
-    if (isBusy) {
-      throw new Error("Request is in progress");
-    }
-
+  async function onRequestDog() {
     try {
-      setIsBusy(true);
+      setFetching(true);
       setError(undefined);
 
-      const result = await callbackRef.current(...args);
+      const result = await axios('https://dog.ceo/api/breeds/image/random');
 
-      setIsBusy(false);
-      setResult(result.data.message);
+      setDogImgUrl(result.data.message);
     } catch (err) {
       setError(err.message);
     }
+  }  
+
+  function onImageLoad() {
+    setFetching(false);
   }
-
-  return [wrapperFunc, isBusy, result, error]; 
-}
-
-export default function App() {
-  const [requestDog, fetching, dogImgUrl, error] = useAsync(fetchDogAsync);
-
-  // function onImageLoad() {
-  //   setFetching(false);
-  // }
 
   // Make the page fetch a dog on initial load.
   useEffect(() => {
     console.log("Calling useEffect on initial mount.");
-    requestDog();
+    onRequestDog();
   }, []);
 
   return (
@@ -65,7 +44,7 @@ export default function App() {
         {
           fetching ?
             (<button disabled>Fetching...</button>) :
-            (<button onClick={() => requestDog("fetch!")}>Fetch a dog</button>)
+            (<button onClick={onRequestDog}>Fetch a dog</button>)
         }
       </div>
       <div>
@@ -77,7 +56,8 @@ export default function App() {
         { dogImgUrl &&
           <img 
             src={dogImgUrl}
-            alt="Love that doggo!"/>
+            alt="Love that doggo!" 
+            onLoad={onImageLoad}/>
         }
       </div>
     </div>

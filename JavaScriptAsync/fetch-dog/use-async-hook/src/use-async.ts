@@ -2,6 +2,22 @@ import { useState, useEffect, useRef } from 'react';
 
 export type AsyncFunction<ResultType = void> = (...args: any[]) => Promise<ResultType>;
 
+/* this is something I wanted to try out
+
+
+  type Promisified<T extends (...args: any[]) => any> = (...args: Parameters<T>) => Promise<ReturnType<T>>;
+
+  export type Unmapped = {
+    [name: string]: (...args: any[]) => any
+  };
+
+  export type Mapped<U extends Unmapped> = {
+      [N in keyof U]: Promisified<U[N]>
+  }
+
+*/
+
+
 export interface AsyncOperationState<ResultType> {
   invoke: AsyncFunction<ResultType | undefined>;
   result?: ResultType;

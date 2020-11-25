@@ -1,0 +1,62 @@
+import React from 'react';
+import * as UseAsyncOperation from './use-async-operation';
+
+describe('use-async-operation', () => {
+  let completedCallbackSpy: any;
+  let setUseStateSpy: any;
+
+  beforeAll(() => {
+    completedCallbackSpy = jest.fn().mockImplementation(() => {});
+    setUseStateSpy = jest.fn();
+    jest
+      .spyOn(React, 'useState')
+      .mockImplementation((state) => [state, setUseStateSpy]);
+    jest.spyOn(React, 'useEffect').mockImplementation((fn) => fn());
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should handle getting a successful result from the operation', async () => {
+    const callbackSpy = jest.fn().mockImplementation(() => {
+      return new Promise((resolve) => {
+        resolve();
+      });
+    });
+    jest.spyOn(React, 'useRef').mockImplementation(() => {
+      return { current: callbackSpy };
+    });
+
+    const [asyncWrapperFunction] = UseAsyncOperation.useAsyncOperation(
+      callbackSpy,
+      completedCallbackSpy
+    );
+    await asyncWrapperFunction();
+
+    expect(callbackSpy).toHaveBeenCalled();
+    expect(completedCallbackSpy).toHaveBeenCalled();
+  });
+
+  it('should handle exception from the operation', async () => {
+    const callbackSpy = jest.fn().mockImplementation(() => {
+      return new Promise((resolve, reject) => {
+        reject();
+      });
+    });
+    jest.spyOn(React, 'useRef').mockImplementation(() => {
+      return { current: callbackSpy };
+    });
+
+    const [asyncWrapperFunction] = UseAsyncOperation.useAsyncOperation(
+      callbackSpy,
+      completedCallbackSpy
+    );
+    try {
+      await asyncWrapperFunction();
+    } catch (err) {
+      expect(callbackSpy).toHaveBeenCalled();
+      expect(completedCallbackSpy).not.toHaveBeenCalled();
+    }
+  });
+});

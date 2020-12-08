@@ -1,24 +1,24 @@
 import { useState, useEffect, useRef } from 'react';
 
-export type AsyncFunction<ResultType = void> = (...args: any[]) => Promise<ResultType>;
+// export type AsyncFunction<ResultType = void> = (...args: any[]) => Promise<ResultType>;
 
-function withLogging<T extends (...args: any[]) => any>(func: T): (...funcArgs: Parameters<T>) => ReturnType<T> {
-  const funcName = func.name;
+// function withLogging<T extends (...args: any[]) => any>(func: T): (...funcArgs: Parameters<T>) => ReturnType<T> {
+//   const funcName = func.name;
 
-  // Return a new function that tracks how long the original took
-  return (...args: Parameters<T>): ReturnType<T> => {
-    console.time(funcName);
-    const results = func(...args);
-    console.timeEnd(funcName);
-    return results;
-  };
-}
+//   // Return a new function that tracks how long the original took
+//   return (...args: Parameters<T>): ReturnType<T> => {
+//     console.time(funcName);
+//     const results = func(...args);
+//     console.timeEnd(funcName);
+//     return results;
+//   };
+// }
 
-function add(x: number, y: number): number {
-  return x + y;
-}
+// function add(x: number, y: number): number {
+//   return x + y;
+// }
 
-const addWithLogging = withLogging(add);
+// const addWithLogging = withLogging(add);
 
 /*
 I'm stuck, here.  Found these articles:
@@ -35,24 +35,27 @@ Other articles:
 
 */
 
-export interface AsyncOperationState<ResultType> {
-  invoke: AsyncFunction<ResultType | undefined>;
-  result?: any;
+export interface AsyncOperationState<CallbackType, ResultType> {
+  invoke: CallbackType;
+  result?: ResultType;
   isBusy: boolean;
   error?: Error;
 }
 
+type AsyncReturnType<T extends (...args: any) => any> =
+	T extends (...args: Parameters<T>) => Promise<infer U> ? U :
+	T extends (...args: Parameters<T>) => infer U ? U :
+  any;
+  
 export default function useAsync<CallbackType extends (...args: any[]) => any>(
   callback: CallbackType
-): AsyncOperationState<(...funcArgs: Parameters<CallbackType>) => ReturnType<CallbackType>> {
+): AsyncOperationState<(...funcArgs: Parameters<CallbackType>) => ReturnType<CallbackType>, AsyncReturnType<CallbackType>> {
   const operationRef: any = useRef({});
   const callbackRef: any = useRef();
   const isMountedRef: any = useRef(undefined);
   const [isBusy, setIsBusy] = useState(false);
   const [result, setResult] = useState(undefined);
   const [error, setError] = useState(undefined);
-
-  addWithLogging(2, 3);
 
   // If caller is using a locally-defined function, this will
   // keep things up to date.

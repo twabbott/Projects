@@ -10,6 +10,11 @@ async function fetchDogAsync(str: string): Promise<string> {
 
 export default function App() {
   const fetchOperation = useAsync(fetchDogAsync);
+  const {
+    result,
+    isBusy,
+    error,
+  } = fetchOperation;
 
   // Make the page fetch a dog on initial load.
   useEffect(() => {
@@ -30,26 +35,26 @@ export default function App() {
         <p>This example demonstrates using promises to perform an asynchronous operation.</p>
       </header>
       <div>
-        { fetchOperation.isBusy && "Fetching a dog..."}
-        { !fetchOperation.isBusy && fetchOperation.result && "Keep clicking for new dogs!" }
-        { !fetchOperation.isBusy && !fetchOperation.result && "Click the button to fetch a dog." }
+        { isBusy && "Fetching a dog..."}
+        { !isBusy && result && "Keep clicking for new dogs!" }
+        { !isBusy && !result && "Click the button to fetch a dog." }
       </div>
       <div>
         {
-          fetchOperation.isBusy ?
+          isBusy ?
             (<button disabled>Fetching...</button>) :
             (<button onClick={() => fetchOperation.invoke('fetch from button click')}>Fetch a dog</button>)
         }
       </div>
       <div>
         {
-          fetchOperation.error && <p style={{ color: "red" }}>WTH? There was a bad! {fetchOperation.error.message}</p>
+          error && <p style={{ color: "red" }}>WTH? There was a bad! {error.message}</p>
         }
       </div>
       <div>
-        { fetchOperation.result &&
+        { result &&
           <img 
-            src={fetchOperation.result}
+            src={result}
             alt="Love that doggo!"/>
         }
       </div>

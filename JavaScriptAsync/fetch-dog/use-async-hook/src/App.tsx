@@ -9,7 +9,7 @@ async function fetchDogAsync(str: string): Promise<string> {
 }
 
 export default function App() {
-  const fetchOperation = useAsync<string>(fetchDogAsync);
+  const fetchOperation = useAsync(fetchDogAsync);
 
   // Make the page fetch a dog on initial load.
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function App() {
           console.log('Fetch operation success:', data);
         }
       });
-  }, []);
+  }, [fetchOperation]);
 
   return (
     <div className="App">

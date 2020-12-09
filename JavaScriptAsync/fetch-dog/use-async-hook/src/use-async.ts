@@ -46,16 +46,18 @@ type AsyncReturnType<T extends (...args: any) => any> =
 	T extends (...args: Parameters<T>) => Promise<infer U> ? U :
 	T extends (...args: Parameters<T>) => infer U ? U :
   any;
-  
+
 export default function useAsync<CallbackType extends (...args: any[]) => any>(
   callback: CallbackType
 ): AsyncOperationState<(...funcArgs: Parameters<CallbackType>) => ReturnType<CallbackType>, AsyncReturnType<CallbackType>> {
   const operationRef: any = useRef({});
   const callbackRef: any = useRef();
   const isMountedRef: any = useRef(undefined);
-  const [isBusy, setIsBusy] = useState(false);
-  const [result, setResult] = useState(undefined);
-  const [error, setError] = useState(undefined);
+  const [state, setState] = useState({
+    isBusy: false,
+    result: undefined,
+    error: undefined
+  });
 
   // If caller is using a locally-defined function, this will
   // keep things up to date.
@@ -72,37 +74,46 @@ export default function useAsync<CallbackType extends (...args: any[]) => any>(
   }, []);
 
   async function invoke(...args: Parameters<CallbackType>): Promise<CallbackType | undefined> {
-    if (isBusy) {
+    if (state.isBusy) {
       throw new Error('Request is in progress');
     }
 
     try {
-      setIsBusy(true);
-      setResult(undefined);
-      setError(undefined);
+      setState({
+        isBusy: true,
+        result: undefined,
+        error: undefined
+      });
 
-      const data: any = await callbackRef.current(...args);
+      const result: any = await callbackRef.current(...args);
 
       if (isMountedRef.current) {
-        setIsBusy(false);
-        setResult(data);
+        setState({
+          isBusy: false,
+          result,
+          error: undefined
+        });
       }
 
-      return data;
-    } catch (err) {
+      return result;
+    } catch (error) {
       if (isMountedRef.current) {
-        setIsBusy(false);
-        setError(err);
+        setState({
+          isBusy: false,
+          result: undefined,
+          error
+        });
       }
     }
 
     return undefined;
   }
 
+  // Return a stable reference to operation object
   operationRef.current.invoke = invoke;
-  operationRef.current.result = result;
-  operationRef.current.isBusy = isBusy;
-  operationRef.current.error = error;
+  operationRef.current.result = state.result;
+  operationRef.current.isBusy = state.isBusy;
+  operationRef.current.error = state.error;
 
   return operationRef.current;
 }

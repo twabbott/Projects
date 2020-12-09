@@ -48,7 +48,8 @@ type AsyncReturnType<T extends (...args: any) => any> =
   any;
 
 export default function useAsync<CallbackType extends (...args: any[]) => any>(
-  callback: CallbackType
+  callback: CallbackType,
+  invokeOnMount: boolean = false
 ): AsyncOperationState<(...funcArgs: Parameters<CallbackType>) => ReturnType<CallbackType>, AsyncReturnType<CallbackType>> {
   const operationRef: any = useRef({});
   const callbackRef: any = useRef();
@@ -68,6 +69,7 @@ export default function useAsync<CallbackType extends (...args: any[]) => any>(
   // Detect if component gets un-mounted
   useEffect(() => {
     isMountedRef.current = true;
+
     return () => {
       isMountedRef.current = false;
     };

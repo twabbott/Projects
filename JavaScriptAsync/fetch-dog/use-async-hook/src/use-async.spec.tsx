@@ -28,10 +28,42 @@ describe('use-async', () => {
       operation.error,
       props.count
     ];
-    console.log('@@@@@', JSON.stringify(state));
     stateChanges.push(state);
 
     return <>{props.count}</>;
+  }
+
+  function BusyComponent(): React.ReactElement {
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      if (count < 3) {
+        setCount(count + 1);
+      }
+    }, [count]);
+
+    return <TestComponent count={count} />
+  }
+
+  function BadComponent(): React.ReactElement {
+    const operation = useAsync(mockOperation);
+    const [count, setCount] = useState(0);
+
+    useEffect(() => {
+      if (count < 1) {
+        setCount(count + 1);
+      }
+    }, [count]);
+
+    useEffect(() => {
+      operation.invoke()
+        .then(
+          () => stateChanges.push('Done'),
+          (err: Error) => stateChanges.push(err.message)
+        );
+    }, [operation, count]);
+
+    return <span></span>
   }
 
   afterEach(() => {
@@ -76,24 +108,11 @@ describe('use-async', () => {
   });
 
   it('should remain stable when parent component re-renders', async () => {
-    console.log('=================================')
     const mockResult = 'Success';
     mockOperation.mockImplementation(async () => {
       await sleep(100);
       return mockResult;
     });
-
-    function BusyComponent() {
-      const [count, setCount] = useState(0);
-
-      useEffect(() => {
-        if (count < 3) {
-          setCount(count + 1);
-        }
-      }, [count]);
-
-      return <TestComponent count={count} />
-    }
 
     await act(async () => {
       await render(<BusyComponent />);
@@ -111,7 +130,92 @@ describe('use-async', () => {
   });
 
   it ('should handle component unmounting before operation completes', async () => {
-    // TODO
-    expect(true).toBe(false);
+    const mockResult = 'Success';
+    mockOperation.mockImplementation(async () => {
+      await sleep(100);
+      return mockResult;
+    });
+
+    function BusyComponent() {
+      const [count, setCount] = useState(0);
+
+      useEffect(() => {
+        if (count < 3) {
+          setCount(count + 1);
+        }
+      }, [count]);
+
+      if (count > 2) {
+        return <span></span>;
+      }
+
+      return <TestComponent count={count} />
+    }
+
+    await act(async () => {
+      await render(<BusyComponent />);
+      await sleep(200);
+    });
+
+    expect(stateChanges).toStrictEqual([
+      [false, undefined, undefined, 0], // Component mount, useEffect not yet called
+      [true, undefined, undefined, 1],  // useEffect called.  Operation is busy.  count=0
+      [true, undefined, undefined, 2],  // useEffect called.  Operation is busy.  count=1
+      'done'
+    ]);
+  });
+
+  it ('should handle component unmounting before operation errors out', async () => {
+    const msg = 'blaaaarg';
+    mockOperation.mockImplementation(async () => {
+      await sleep(100);
+      throw new Error(msg);
+    });
+
+    function BusyComponent() {
+      const [count, setCount] = useState(0);
+
+      useEffect(() => {
+        if (count < 3) {
+          setCount(count + 1);
+        }
+      }, [count]);
+
+      if (count > 2) {
+        return <span></span>;
+      }
+
+      return <TestComponent count={count} />
+    }
+
+    await act(async () => {
+      await render(<BusyComponent />);
+      await sleep(200);
+    });
+
+    expect(stateChanges).toStrictEqual([
+      [false, undefined, undefined, 0], // Component mount, useEffect not yet called
+      [true, undefined, undefined, 1],  // useEffect called.  Operation is busy.  count=0
+      [true, undefined, undefined, 2],  // useEffect called.  Operation is busy.  count=1
+      'done'
+    ]);
+  });
+
+  it ('should error out if the operation is invoked while busy', async () => {
+    const mockResult = 'Success';
+    mockOperation.mockImplementation(async () => {
+      await sleep(100);
+      return mockResult;
+    });
+
+    await act(async () => {
+      await render(<BadComponent />);
+      await sleep(200);
+    });
+
+    expect(stateChanges).toStrictEqual([
+      'Request is in progress',
+      'Done'
+    ]);
   });
 });

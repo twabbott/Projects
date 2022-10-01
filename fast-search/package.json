@@ -1,0 +1,15 @@
+{
+  "name": "fast-search",
+  "version": "1.0.0",
+  "description": "Name sources:\r * http://www.census.gov/topics/population/genealogy/data/2000_surnames.html\r * http://www.census.gov/topics/population/genealogy/data/1990_census/1990_census_namefiles.html\r *",
+  "main": "app copy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastsearch": "^1.11.1"
+  }
+}
